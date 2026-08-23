@@ -1,0 +1,18 @@
+# Environments & Secrets
+venv/
+.env
+config/secrets/*
+data/.forensic_master_key
+!config/secrets/.gitkeep
+
+# Python & Artifacts
+__pycache__/
+*.py[cod]
+*.so
+data/reports/*.pdf
+data/*.db
+
+# Evidence & Models (Never commit PII, Evidence or 2GB AI Models)
+evidence_vault/
+models/*.pt
+models/*.bin

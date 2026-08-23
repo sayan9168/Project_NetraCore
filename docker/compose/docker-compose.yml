@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  netra-api:
+    build:
+      context: ../../
+      dockerfile: docker/workers/Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql+asyncpg://netra:securepass@postgres:5432/netra_db
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - netra_secure_net
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: netra
+      POSTGRES_PASSWORD: securepass
+      POSTGRES_DB: netra_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - netra_secure_net
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass redis_secure_pass
+    networks:
+      - netra_secure_net
+
+  opa:
+    image: openpolicyagent/opa:latest
+    ports:
+      - "8181:8181"
+    command: run --server --addr 0.0.0.0:8181 /policies
+    volumes:
+      - ../../config/policies:/policies
+    networks:
+      - netra_secure_net
+
+volumes:
+  pg_data:
+
+networks:
+  netra_secure_net:
+    driver: bridge

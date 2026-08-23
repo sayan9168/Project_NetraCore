@@ -1,0 +1,41 @@
+replicaCount: 3
+
+image:
+  repository: your-registry.com/netra-core
+  pullPolicy: IfNotPresent
+  tag: "5.0.0"
+
+service:
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/limit-rps: "10"
+  hosts:
+    - host: api.netra-core.gov.internal
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: netra-tls-secret
+      hosts:
+        - api.netra-core.gov.internal
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4Gi
+  requests:
+    cpu: 1000m
+    memory: 2Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 75
+  targetMemoryUtilizationPercentage: 80

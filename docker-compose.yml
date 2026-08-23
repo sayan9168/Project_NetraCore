@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  netra-api:
+    build: .
+    container_name: netra-core-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql://netra:securepass@postgres:5432/netra_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - netra_secure_net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: netra-postgres
+    environment:
+      POSTGRES_USER: netra
+      POSTGRES_PASSWORD: securepass
+      POSTGRES_DB: netra_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - netra_secure_net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: netra-redis
+    command: redis-server --requirepass redis_secure_pass
+    networks:
+      - netra_secure_net
+    restart: unless-stopped
+
+volumes:
+  pg_data:
+
+networks:
+  netra_secure_net:
+    driver: bridge

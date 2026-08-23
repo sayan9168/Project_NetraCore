@@ -1,0 +1,6 @@
+apiVersion: v2
+name: netra-core
+description: Project Netra-Core - Government Cyber-Defense & Forensic Engine
+type: application
+version: 1.0.0
+appVersion: "5.0.0"
