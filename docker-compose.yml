@@ -49,3 +49,21 @@ volumes:
 networks:
   netra_secure_net:
     driver: bridge
+
+  worker:
+    build: .
+    container_name: netra-worker
+    command: arq src.workers.worker.WorkerSettings
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=redis_secure_pass
+    depends_on:
+      - redis
+    networks:
+      - netra_secure_net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G

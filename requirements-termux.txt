@@ -1,0 +1,27 @@
+# Core API (Pydantic V1 for Python 3.14 compatibility)
+fastapi==0.99.1
+uvicorn==0.22.0
+pydantic==1.10.17
+websockets==12.0
+
+# Cloud & Security
+boto3==1.34.100
+cryptography==42.0.7
+python-jose==3.3.0
+
+# Rate Limiting (Enterprise Feature)
+slowapi==0.1.9
+limits==3.10.1
+
+# PDF Generation
+fpdf2==2.7.9
+
+# Forensics (Lightweight - NO PyTorch)
+Pillow==10.3.0
+numpy==1.26.4
+# opencv-python-headless  # Termux-এ build problem হতে পারে, Pillow দিয়ে ELA করব
+
+# Optional: PyTorch (will fail gracefully if not installable)
+# torch==2.3.0
+# torchvision==0.18.0
+# sentence-transformers==2.7.0

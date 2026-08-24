@@ -20,3 +20,17 @@ numpy==1.26.4
 fpdf2==2.7.9
 psycopg2-binary==2.9.9
 pgvector==0.2.5
+
+# Observability
+opentelemetry-api==1.24.0
+opentelemetry-sdk==1.24.0
+opentelemetry-exporter-otlp==1.24.0
+opentelemetry-instrumentation-fastapi==0.45b0
+
+# Rate Limiting
+slowapi==0.1.9
+limits==3.10.1
+
+# Task Queue
+arq==0.25.0
+redis==5.0.4

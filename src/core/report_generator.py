@@ -1,7 +1,11 @@
 import json
 import os
 from datetime import datetime
-from fpdf import FPDF
+try:
+    from fpdf import FPDF
+    FPDF_AVAILABLE = True
+except Exception:
+    FPDF_AVAILABLE = False
 from src.core.database import EvidenceVault
 
 class ForensicReportGenerator:
@@ -12,6 +16,8 @@ class ForensicReportGenerator:
         self.vault = vault
 
     def generate_pdf(self, case_id: str, output_path: str) -> dict:
+        if not FPDF_AVAILABLE:
+            return {"status": "ERROR", "message": "PDF engine unavailable on this device"}
         # 1. Fetch and Verify Cryptographic Chain
         chain_data = self.vault.get_case_chain(case_id)
         if not chain_data:
@@ -94,3 +100,31 @@ class ForensicReportGenerator:
         # Save PDF
         pdf.output(output_path)
         return {"status": "SUCCESS", "path": output_path, "records": len(chain_data), "is_valid": is_valid}
+
+# Patch: Add digital signature to PDF
+class ForensicReportGeneratorSigned(ForensicReportGenerator):
+    """Extends base generator with RSA-4096 digital signatures."""
+
+    def __init__(self, vault):
+        super().__init__(vault)
+        from src.core.pdf_signer import PDFSigner
+        self.signer = PDFSigner()
+
+    def generate_signed_pdf(self, case_id: str, output_path: str) -> dict:
+        # 1. Generate base PDF
+        base_result = self.generate_pdf(case_id, output_path)
+        if base_result["status"] == "ERROR":
+            return base_result
+
+        # 2. Sign the PDF
+        sig_meta = self.signer.sign_document(output_path)
+
+        # 3. Write signature sidecar file
+        sidecar_path = output_path + ".sig"
+        import json
+        with open(sidecar_path, "w") as f:
+            json.dump(sig_meta, f, indent=2)
+
+        base_result["signature"] = sig_meta
+        base_result["signature_sidecar"] = sidecar_path
+        return base_result
