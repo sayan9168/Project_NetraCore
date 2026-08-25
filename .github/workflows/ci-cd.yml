@@ -17,14 +17,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install security tools
+        run: |
+          pip install bandit safety
+
       - name: Run Bandit (Python SAST)
         run: |
-          pip install bandit
           bandit -r src/ -f json -o bandit-report.json || true
 
       - name: Run Safety (Dependency Vulnerabilities)
         run: |
-          pip install safety
           safety check -r requirements-prod.txt || true
 
       - name: Upload SAST reports
@@ -96,4 +103,5 @@ jobs:
       - name: Trigger production deploy
         run: |
           echo "Deploying SHA-${{ github.sha }} to production cluster"
-          # Add your ArgoCD Flux / kubectl apply webhook here
+          echo "Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          # Add your ArgoCD / Flux / kubectl webhook here
