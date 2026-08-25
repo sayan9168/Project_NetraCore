@@ -1,0 +1,11 @@
+{"timestamp": "2026-08-25T07:53:33+0530", "level": "WARNING", "event": "otel_not_installed", "service": "netra-core", "hint": "pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp"}
+2026-08-25 07:53:33,672 | netra.otel | WARNING | {"timestamp": "2026-08-25T07:53:33+0530", "level": "WARNING", "event": "otel_not_installed", "service": "netra-core", "hint": "pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp"}
+2026-08-25 07:53:34,270 | netra.module_b | INFO | Module B initialized in FALLBACK mode
+2026-08-25 07:53:34,270 | netra.module_d | INFO | Module D initialized in FALLBACK_FTS5 mode
+INFO:     Started server process [19092]
+INFO:     Waiting for application startup.
+2026-08-25 07:53:34,294 | netra.api | INFO | API v6.1.2 started with global error handler
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:43356 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43358 - "GET /health HTTP/1.1" 200 OK
