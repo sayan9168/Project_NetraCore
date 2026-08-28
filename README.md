@@ -1,4 +1,24 @@
 # 🛡️ Project Netra-Core
+<!-- Professional Badges -->
+<p align="center">
+  <img src="https://img.shields.io/badge/Version-6.1.2--Production-blue?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-0.111-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Kubernetes-Helm-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes">
+  <img src="https://img.shields.io/badge/Security-Tamper--Evident-red?style=for-the-badge" alt="Security">
+  <img src="https://img.shields.io/github/license//?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/stars//?style=for-the-badge&color=gold" alt="Stars">
+  <img src="https://img.shields.io/github/last-commit//?style=for-the-badge" alt="Last Commit">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/ISO-27001%20Compliant-4CAF50?style=flat-square" alt="ISO 27001">
+  <img src="https://img.shields.io/badge/NIS2-Compliant-2196F3?style=flat-square" alt="NIS2">
+  <img src="https://img.shields.io/badge/Court-Admissible-FF5722?style=flat-square" alt="Court Admissible">
+  <img src="https://img.shields.io/badge/Zero-Trust-9C27B0?style=flat-square" alt="Zero Trust">
+</p>
+
 
 ### Government Cyber-Defense & Forensic Engine
 

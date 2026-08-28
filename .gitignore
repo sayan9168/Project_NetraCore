@@ -2,17 +2,20 @@
 venv/
 .env
 config/secrets/*
-data/.forensic_master_key
-!config/secrets/.gitkeep
 
-# Python & Artifacts
+# Runtime data (NEVER commit evidence, keys, or databases)
+data/
+logs/
+evidence_vault/
+
+# Python artifacts
 __pycache__/
 *.py[cod]
 *.so
-data/reports/*.pdf
-data/*.db
 
-# Evidence & Models (Never commit PII, Evidence or 2GB AI Models)
-evidence_vault/
+# Generated artifacts
+*.pdf
+*.db
+*.sqlite3
 models/*.pt
 models/*.bin
