@@ -1,0 +1,58 @@
+site_name: Project Netra-Core
+site_url: https://sayan9168.github.io/Project_NetraCore/
+site_description: Enterprise-Grade Government Cyber-Defense & Forensic Engine
+site_author: Sayan Chowdhury
+
+repo_name: sayan9168/Project_NetraCore
+repo_url: https://github.com/sayan9168/Project_NetraCore
+
+theme:
+  name: material
+  palette:
+    # Dark mode (Cyberpunk/Security theme)
+    - scheme: slate
+      primary: blue grey
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Light mode
+    - scheme: default
+      primary: blue grey
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Security & Compliance:
+    - Zero-Trust Model: security/zero-trust.md
+    - Cryptographic Ledger: security/ledger.md
+    - Legal Compliance (BNS/IT Act): security/legal-nlp.md
+  - Deployment:
+    - Docker Setup: deployment/docker.md
+    - Kubernetes (Helm): deployment/kubernetes.md
+    - Termux Edge Node: deployment/termux.md
+  - API Reference: api/reference.md
