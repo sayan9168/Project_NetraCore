@@ -1,0 +1,5 @@
+# Dev/test tooling (install on top of requirements-minimal.txt or requirements.txt)
+pytest>=8.0
+httpx>=0.27
+requests>=2.31  # TestClient transport for older FastAPI/Starlette pins
+ruff>=0.4

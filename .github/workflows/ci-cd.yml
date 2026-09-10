@@ -11,6 +11,43 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  test:
+    name: 🧪 Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install minimal deps + test tooling
+        run: |
+          pip install -r requirements-minimal.txt -r requirements-dev.txt
+
+      - name: Run pytest
+        run: |
+          PYTHONPATH=. python -m pytest tests/ -p no:warnings -q
+
+  lint:
+    name: ✨ Lint (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Run ruff check
+        run: ruff check src tests netra_cli.py seed_legal_db.py
+
   security-scan:
     name: 🔒 Security & SAST Scan
     runs-on: ubuntu-latest

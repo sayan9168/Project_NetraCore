@@ -9,9 +9,36 @@ services:
     environment:
       - ENV=production
       - DATABASE_URL=postgresql://netra:securepass@postgres:5432/netra_db
-      - REDIS_URL=redis://redis:6379/0
+      - REDIS_URL=redis://:redis_secure_pass@redis:6379/0
+      - NETRA_API_KEYS=${NETRA_API_KEYS:-}
+      - NETRA_ADMIN_KEYS=${NETRA_ADMIN_KEYS:-}
+      - NETRA_TOKEN_SECRET=${NETRA_TOKEN_SECRET:-}
     depends_on:
       - postgres
+      - redis
+    networks:
+      - netra_secure_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+
+  worker:
+    build: .
+    container_name: netra-worker
+    command: arq src.workers.worker.WorkerSettings
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=redis_secure_pass
+    depends_on:
       - redis
     networks:
       - netra_secure_net
@@ -43,27 +70,22 @@ services:
       - netra_secure_net
     restart: unless-stopped
 
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: netra-prometheus
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - netra_secure_net
+    profiles:
+      - monitoring
+    restart: unless-stopped
+
 volumes:
   pg_data:
 
 networks:
   netra_secure_net:
     driver: bridge
-
-  worker:
-    build: .
-    container_name: netra-worker
-    command: arq src.workers.worker.WorkerSettings
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PASSWORD=redis_secure_pass
-    depends_on:
-      - redis
-    networks:
-      - netra_secure_net
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '4.0'
-          memory: 8G

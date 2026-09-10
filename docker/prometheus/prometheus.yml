@@ -1,0 +1,15 @@
+# Prometheus scrape config for Netra-Core.
+# Start with:  docker compose --profile monitoring up -d
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: netra-api
+    static_configs:
+      - targets: ['netra-api:8000']
+    metrics_path: /metrics
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ['127.0.0.1:9090']

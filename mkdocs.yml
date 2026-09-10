@@ -47,6 +47,9 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Architecture: architecture.md
+  - Modules: modules.md
+  - Configuration: configuration.md
+  - Operator CLI: cli.md
   - Security & Compliance:
     - Zero-Trust Model: security/zero-trust.md
     - Cryptographic Ledger: security/ledger.md

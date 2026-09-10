@@ -2,22 +2,26 @@
 Production Observability Layer.
 Exports traces to Jaeger/OTLP, metrics to Prometheus, logs structured JSON.
 """
-import logging
+
 import json
+import logging
 import time
+from collections.abc import Callable
 from functools import wraps
-from contextlib import asynccontextmanager
-from typing import Callable
 
 try:
-    from opentelemetry import trace, metrics
-    from opentelemetry.sdk.trace import TracerProvider
-    from opentelemetry.sdk.metrics import MeterProvider
-    from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-    from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
-    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+    from opentelemetry import metrics, trace
     from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+    from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
     from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+    from opentelemetry.sdk.metrics import MeterProvider
+    from opentelemetry.sdk.metrics.export import (
+        ConsoleMetricExporter,
+        PeriodicExportingMetricReader,
+    )
+    from opentelemetry.sdk.trace import TracerProvider
+    from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+
     OTEL_AVAILABLE = True
 except ImportError:
     OTEL_AVAILABLE = False
@@ -41,14 +45,21 @@ class StructuredLogger:
             "level": level,
             "event": event,
             "service": "netra-core",
-            **kwargs
+            **kwargs,
         }
         getattr(self.logger, level.lower())(json.dumps(record))
 
-    def info(self, event: str, **kwargs): self._emit("INFO", event, **kwargs)
-    def warning(self, event: str, **kwargs): self._emit("WARNING", event, **kwargs)
-    def error(self, event: str, **kwargs): self._emit("ERROR", event, **kwargs)
-    def critical(self, event: str, **kwargs): self._emit("CRITICAL", event, **kwargs)
+    def info(self, event: str, **kwargs):
+        self._emit("INFO", event, **kwargs)
+
+    def warning(self, event: str, **kwargs):
+        self._emit("WARNING", event, **kwargs)
+
+    def error(self, event: str, **kwargs):
+        self._emit("ERROR", event, **kwargs)
+
+    def critical(self, event: str, **kwargs):
+        self._emit("CRITICAL", event, **kwargs)
 
 
 def setup_observability(app=None, otlp_endpoint: str = None):
@@ -56,7 +67,10 @@ def setup_observability(app=None, otlp_endpoint: str = None):
     logger = StructuredLogger("netra.otel")
 
     if not OTEL_AVAILABLE:
-        logger.warning("otel_not_installed", hint="pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp")
+        logger.warning(
+            "otel_not_installed",
+            hint="pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp",
+        )
         return
 
     # Tracing
@@ -101,7 +115,9 @@ def traced(name: str = None):
                     span.set_status(trace.StatusCode.ERROR, str(e))
                     span.record_exception(e)
                     raise
+
         return wrapper
+
     return decorator
 
 
@@ -120,8 +136,11 @@ class Metrics:
 
 
 class _Noop:
-    def add(self, *a, **k): pass
-    def record(self, *a, **k): pass
+    def add(self, *a, **k):
+        pass
+
+    def record(self, *a, **k):
+        pass
 
 
 metrics_instance = Metrics()
