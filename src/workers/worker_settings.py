@@ -5,6 +5,7 @@ Run with:
     arq src.workers.worker.WorkerSettings
 or via docker compose (the `worker` service).
 """
+
 import os
 
 

@@ -1,5 +1,7 @@
 # Dev/test tooling (install on top of requirements-minimal.txt or requirements.txt)
 pytest>=8.0
-httpx>=0.27
+# httpx<0.28 keeps the `app=` shortcut that starlette<0.29 TestClient needs
+# (requirements-minimal pins FastAPI 0.99 / Starlette 0.27).
+httpx>=0.24,<0.28
 requests>=2.31  # TestClient transport for older FastAPI/Starlette pins
 ruff>=0.4
