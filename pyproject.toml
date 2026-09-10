@@ -1,0 +1,59 @@
+[project]
+name = "netra-core"
+version = "6.2.0"
+description = "Government Cyber-Defense & Forensic Engine — zero-trust, tamper-evident, court-admissible."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Sayan Mahata" }]
+keywords = ["forensics", "cybersecurity", "fastapi", "dfir", "evidence"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Law Enforcement",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+
+[project.optional-dependencies]
+prod = [
+  "fastapi==0.111.0",
+  "uvicorn[standard]==0.30.1",
+  "pydantic==2.7.1",
+  "slowapi==0.1.9",
+  "fpdf2==2.7.9",
+  "cryptography==42.0.7",
+  "boto3==1.34.100",
+]
+ml = [
+  "torch==2.3.0",
+  "torchvision==0.18.0",
+  "opencv-python-headless==4.9.0.80",
+  "sentence-transformers==2.7.0",
+  "numpy==1.26.4",
+]
+dev = [
+  "pytest>=8.0",
+  "httpx>=0.27",
+  "ruff>=0.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501", "B008", "UP031"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/workers/*", "src/orchestrator/*"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,10 @@
+{
+  "_note": "Bundled demo threat-intel feed (TEST-NET / documentation addresses only — safe to ship). Replace with your TAXII/STIX export in production.",
+  "version": "2026.09.1",
+  "malicious_ips": ["203.0.113.45", "198.51.100.23", "192.0.2.99"],
+  "malicious_domains": ["malware.example", "c2-server.example", "phish-kit.example"],
+  "malicious_hashes": ["44d88612fea8a8f36de82e1278abb02f"],
+  "suspicious_tlds": ["tk", "ml", "ga", "cf", "gq", "xyz", "top", "click", "link", "zip", "mov"],
+  "suspicious_ports": [4444, 5555, 6666, 6667, 7777, 8888, 9999, 31337, 12345],
+  "tor_exit_sample": ["192.0.2.50"]
+}

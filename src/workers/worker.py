@@ -2,14 +2,12 @@
 Production Async Worker for Module B (PyTorch Inference).
 Runs as separate process, consumes jobs from Redis queue.
 """
-import asyncio
-import logging
-from arq import create_pool
-from arq.connections import RedisSettings
 
-from src.modules.module_b import SteganalysisModule
+import logging
+
 from src.core.database import EvidenceVault
 from src.core.models import CaseIntakeRequest
+from src.modules.module_b import SteganalysisModule
 from src.workers.worker_settings import WorkerSettings
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(name)s | %(message)s")
@@ -25,10 +23,14 @@ async def process_image_forensics(ctx, case_id: str, evidence_uri: str):
 
     request = CaseIntakeRequest(
         case_id=case_id,
-        legal_authority={"warrant_id": "W-WORKER", "issued_by": "System",
-                        "expires_at": "2099-01-01T00:00:00Z", "scope": {}},
+        legal_authority={
+            "warrant_id": "W-WORKER",
+            "issued_by": "System",
+            "expires_at": "2099-01-01T00:00:00Z",
+            "scope": {},
+        },
         target_type="media",
-        evidence_uri=evidence_uri
+        evidence_uri=evidence_uri,
     )
 
     findings = await stego_module.run(request)

@@ -1,0 +1,18 @@
+Project Netra-Core {{ .Chart.AppVersion }} deployed.
+
+  Classification: RESTRICTED / LAW-ENFORCEMENT GRADE
+
+1. Check rollout status:
+     kubectl -n {{ .Release.Namespace }} rollout status deploy/{{ .Release.Name }}-netra-core
+
+2. Port-forward the API:
+     kubectl -n {{ .Release.Namespace }} port-forward svc/{{ .Release.Name }}-netra-core 8000:8000
+
+3. Verify health:
+     curl http://127.0.0.1:8000/v2/health
+
+4. Open the SOC dashboard:
+     http://127.0.0.1:8000/dashboard
+
+Remember: configure NETRA_API_KEYS / NETRA_ADMIN_KEYS / NETRA_TOKEN_SECRET
+via sealed secrets, and persist data/ + logs/ on durable volumes.

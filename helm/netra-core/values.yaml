@@ -1,9 +1,9 @@
 replicaCount: 3
 
 image:
-  repository: your-registry.com/netra-core
+  repository: ghcr.io/sayan9168/project_netracore
   pullPolicy: IfNotPresent
-  tag: "5.0.0"
+  tag: "6.2.0"
 
 service:
   type: ClusterIP
@@ -39,3 +39,17 @@ autoscaling:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 75
   targetMemoryUtilizationPercentage: 80
+
+networkPolicy:
+  enabled: true
+  # Restrict ingress sources, e.g.:
+  # allowFrom:
+  #   - podSelector:
+  #       matchLabels:
+  #         app: ingress-nginx
+  allowFrom: []
+
+persistence:
+  enabled: false
+  size: 10Gi
+  storageClass: ""
