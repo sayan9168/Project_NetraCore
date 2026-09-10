@@ -5,11 +5,10 @@ Runs as separate process, consumes jobs from Redis queue.
 
 import logging
 
-from src.workers.worker_settings import WorkerSettings
-
 from src.core.database import EvidenceVault
 from src.core.models import CaseIntakeRequest
 from src.modules.module_b import SteganalysisModule
+from src.workers.worker_settings import WorkerSettings
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(name)s | %(message)s")
 logger = logging.getLogger("netra.worker")
